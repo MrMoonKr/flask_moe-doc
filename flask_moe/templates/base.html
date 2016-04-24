@@ -51,7 +51,7 @@
                 <div class="col-sm-3 sidenav">
                     <h4>flask.moe</h4>
                     <ul class="nav nav-pills nav-stacked">
-                        <li><a href="/">이 웹사이트는?</a></li>
+                        <li {% if page=="home" %}class="active"{% endif %}><a href="/">이 웹사이트는?</a></li>
                         <li><a href="/windows">윈도우 기반의 파이썬 개발환경</a></li>
                         <li class="dropdown active">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
