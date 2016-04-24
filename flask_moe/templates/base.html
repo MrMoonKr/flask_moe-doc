@@ -17,6 +17,14 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
         <style>
+            /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
+            .row.content {height: 1500px}
+
+            /* Set gray background color and 100% height */
+            .sidenav {
+                background-color: #f1f1f1;
+            }
+
             /* Set black background color, white text and some padding */
             footer {
                 background-color: #555;
@@ -26,28 +34,11 @@
 
             /* On small screens, set height to 'auto' for sidenav and grid */
             @media screen and (max-width: 767px) {
-                .sidebar-nav {
-                    background-color: #f1f1f1;
-                    height: 100%;
+                .sidenav {
+                    height: auto;
+                    padding: 15px;
                 }
-                .sidebar-nav .navbar .navbar-collapse {
-                    padding: 0;
-                    max-height: none;
-                }
-                .sidebar-nav .navbar ul {
-                    float: none;
-                }
-                .sidebar-nav .navbar ul:not {
-                    display: block;
-                }
-                .sidebar-nav .navbar li {
-                    float: none;
-                    display: block;
-                }
-                .sidebar-nav .navbar li a {
-                    padding-top: 12px;
-                    padding-bottom: 12px;
-                }
+                .row.content {height: auto;}
             }
       </style>
     {% block css_block %}
@@ -55,21 +46,10 @@
     </head>
     <body>
         <div class="container-fluid">
-            <div class="row">
-              <div class="col-sm-2">
-                <div class="sidebar-nav">
-                  <div class="navbar navbar-default" role="navigation">
-                    <div class="navbar-header">
-                      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                      </button>
-                      <span class="visible-xs navbar-brand">Sidebar menu</span>
-                    </div>
-                    <div class="navbar-collapse collapse sidebar-navbar-collapse">
-                      <ul class="nav navbar-nav">
+            <div class="row content">
+                <div class="col-sm-2 sidenav">
+                    <h4>flask.moe</h4>
+                    <ul class="nav nav-pills nav-stacked">
                         <li class="active"><a href="#">이 웹사이트는?</a></li>
                         <li><a href="#">윈도우 기반의 파이썬 개발환경</a></li>
 
@@ -77,25 +57,31 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-haspopup="true" aria-expanded="false">Jenkins 연동 <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Github 연동</a></li>
-                                <li><a href="#">BitBucket 연동</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">수동 폴링</a></li>
-                                <li><a href="#">자동 폴링</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">소스코드 배포</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">독자문의</a></li>
-                    </ul>
-                    </div><!--/.nav-collapse -->
-                  </div>
+                            <li><a href="#">Github 연동</a></li>
+                            <li><a href="#">BitBucket 연동</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">수동 폴링</a></li>
+                            <li><a href="#">자동 폴링</a></li>
+                            <li role="separator" class="divider"></li>
+                          <li><a href="#">소스코드 배포</a></li>
+                        </ul>
+                      </li>
+                      <li><a href="#">독자문의</a></li>
+                      <li><a href="#">소스코드</a></li>
+                    </ul><br>
+                    <!--<div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search Blog..">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                    </div>-->
                 </div>
-              </div>
-              <div class="col-sm-10">
-                {% block content_block %}
-                {% endblock %}
-              </div>
+                <div class="col-sm-10">
+                    {% block content_block %}
+                    {% endblock %}
+                </div>
             </div>
         </div>
 
