@@ -146,3 +146,6 @@ def source_list():
         current_path=current_path
     )
     return render_template('sources.html', **tpl_vars)
+
+if __name__ == "__main__":
+    app.run()
