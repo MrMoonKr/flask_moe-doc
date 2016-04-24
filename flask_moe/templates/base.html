@@ -51,23 +51,23 @@
                 <div class="col-sm-3 sidenav">
                     <h4>flask.moe</h4>
                     <ul class="nav nav-pills nav-stacked">
-                        <li {% if page=="home" %}class="active"{% endif %}><a href="/">이 웹사이트는?</a></li>
-                        <li><a href="/windows">윈도우 기반의 파이썬 개발환경</a></li>
-                        <li class="dropdown active">
+                        <li {% if current_path == "index" %}class="active"{% endif %}><a href="/">이 웹사이트는?</a></li>
+                        <li {% if current_path == "windows" %}class="active"{% endif %}><a href="/windows">윈도우 기반의 파이썬 개발환경</a></li>
+                        <li class="dropdown{% if "jenkins" in current_path %} active {% endif %}">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-haspopup="true" aria-expanded="false">Jenkins 연동 <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li class="active"><a href="/jenkins/github">Github 연동</a></li>
-                                <li><a href="/jenkins/bitbucket">BitBucket 연동</a></li>
+                                <li {% if current_path == "jenkins.github" %}class="active"{% endif %}><a href="/jenkins/github">Github 연동</a></li>
+                                <li {% if current_path == "jenkins.bitbucket" %}class="active"{% endif %}><a href="/jenkins/bitbucket">BitBucket 연동</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="/jenkins/polling/manual">수동 폴링</a></li>
-                                <li><a href="/jenkins/polling/auto">자동 폴링</a></li>
+                                <li {% if current_path == "jenkins.polling.manual" %}class="active"{% endif %}><a href="/jenkins/polling/manual">수동 폴링</a></li>
+                                <li {% if current_path == "jenkins.polling.manual" %}class="active"{% endif %}><a href="/jenkins/polling/auto">자동 폴링</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="/jenkins/deploy">프로그램 배포</a></li>
+                                <li {% if current_path == "jenkins.deploy" %}class="active"{% endif %}><a href="/jenkins/deploy">프로그램 배포</a></li>
                             </ul>
                       </li>
-                      <li><a href="/qna">독자문의</a></li>
-                      <li><a href="/source">소스코드</a></li>
+                      <li {% if current_path == "qna" %}class="active"{% endif %}><a href="/qna">독자문의</a></li>
+                      <li {% if current_path == "source" %}class="active"{% endif %}><a href="/source">소스코드</a></li>
                     </ul><br>
                     <!--<div class="input-group">
                         <input type="text" class="form-control" placeholder="Search Blog..">
