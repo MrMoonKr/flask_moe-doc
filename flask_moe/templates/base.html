@@ -34,45 +34,23 @@
 
             /* On small screens, set height to 'auto' for sidenav and grid */
             @media screen and (max-width: 767px) {
-                .sidenav {
-                    height: auto;
-                    padding: 15px;
-                }
-                .row.content {height: auto;}
-
-                .navbar-collapse {
-                    height: auto;
-                    border-top: 0;
-                    box-shadow: none;
+                .sidebar-nav .navbar .navbar-collapse {
+                    padding: 0;
                     max-height: none;
-                    padding-left:0;
-                    padding-right:0;
                 }
-                .navbar-collapse.collapse {
-                    display: block !important;
-                    width: auto !important;
-                    padding-bottom: 0;
-                    overflow: visible !important;
+                .sidebar-nav .navbar ul {
+                    float: none;
                 }
-                .navbar-collapse.in {
-                    overflow-x: visible;
+                .sidebar-nav .navbar ul:not {
+                    display: block;
                 }
-
-                .navbar {
-                    max-width:300px;
-                    margin-right: 0;
-                    margin-left: 0;
+                .sidebar-nav .navbar li {
+                    float: none;
+                    display: block;
                 }
-
-                .navbar-nav,
-                .navbar-nav > li,
-                .navbar-left,
-                .navbar-right,
-                .navbar-header {float:none !important;}
-
-                .navbar-right .dropdown-menu {left:0;right:auto;}
-                .navbar-collapse .navbar-nav.navbar-right:last-child {
-                    margin-right: 0;
+                .sidebar-nav .navbar li a {
+                    padding-top: 12px;
+                    padding-bottom: 12px;
                 }
             }
       </style>
@@ -81,46 +59,50 @@
     </head>
     <body>
         <div class="container-fluid">
-            <nav class="navbar navbar-default">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                          <span class="sr-only">Toggle navigation</span>
-                          <span class="icon-bar"></span>
-                          <span class="icon-bar"></span>
-                          <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="#">Flask 기반의 파이썬 웹 프로그래밍</a>
-                    </div>
-                    <div id="navbar" class="navbar-collapse collapse">
-                        <ul class="nav navbar-nav">
-                            <li class="active"><a href="#">이 웹사이트는?</a></li>
-                            <li><a href="#">윈도우 기반의 파이썬 개발환경</a></li>
+            <div class="col-sm-3">
+                <div class="sidebar-nav">
+                    <nav class="navbar navbar-default">
+                        <div class="container-fluid">
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                  <span class="sr-only">Toggle navigation</span>
+                                  <span class="icon-bar"></span>
+                                  <span class="icon-bar"></span>
+                                  <span class="icon-bar"></span>
+                                </button>
+                                <a class="navbar-brand" href="#">Flask 기반의 파이썬 웹 프로그래밍</a>
+                            </div>
+                            <div id="navbar" class="navbar-collapse collapse">
+                                <ul class="nav navbar-nav">
+                                    <li class="active"><a href="#">이 웹사이트는?</a></li>
+                                    <li><a href="#">윈도우 기반의 파이썬 개발환경</a></li>
 
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                   aria-haspopup="true" aria-expanded="false">Jenkins 연동 <span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Github 연동</a></li>
-                                    <li><a href="#">BitBucket 연동</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="#">수동 폴링</a></li>
-                                    <li><a href="#">자동 폴링</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="#">소스코드 배포</a></li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                           aria-haspopup="true" aria-expanded="false">Jenkins 연동 <span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#">Github 연동</a></li>
+                                            <li><a href="#">BitBucket 연동</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="#">수동 폴링</a></li>
+                                            <li><a href="#">자동 폴링</a></li>
+                                            <li role="separator" class="divider"></li>
+                                            <li><a href="#">소스코드 배포</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#">독자문의</a></li>
                                 </ul>
-                            </li>
-                            <li><a href="#">독자문의</a></li>
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="active"><a href="./">Default <span class="sr-only">(current)</span></a></li>
-                            <li><a href="../navbar-static-top/"></a></li>
-                            <li><a href="../navbar-fixed-top/">Fixed top</a></li>
-                        </ul>
-                    </div><!--/.nav-collapse -->
-                </div><!--/.container-fluid -->
-            </nav>
-
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li class="active"><a href="./">Default <span class="sr-only">(current)</span></a></li>
+                                    <li><a href="../navbar-static-top/"></a></li>
+                                    <li><a href="../navbar-fixed-top/">Fixed top</a></li>
+                                </ul>
+                            </div><!--/.nav-collapse -->
+                        </div><!--/.container-fluid -->
+                    </nav>
+                </div>
+            </div>
+        
             <div class="col-sm-10">
                 {% block content_block %}
                 {% endblock %}
