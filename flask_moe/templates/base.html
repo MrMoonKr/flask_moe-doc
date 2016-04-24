@@ -17,14 +17,6 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
         <style>
-            /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
-            .row.content {height: 1500px}
-
-            /* Set gray background color and 100% height */
-            .sidenav {
-                background-color: #f1f1f1;
-            }
-
             /* Set black background color, white text and some padding */
             footer {
                 background-color: #555;
@@ -59,53 +51,47 @@
     </head>
     <body>
         <div class="container-fluid">
-            <div class="col-sm-3">
+            <div class="row">
+              <div class="col-sm-2">
                 <div class="sidebar-nav">
-                    <nav class="navbar navbar-default">
-                        <div class="container-fluid">
-                            <div class="navbar-header">
-                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                                  <span class="sr-only">Toggle navigation</span>
-                                  <span class="icon-bar"></span>
-                                  <span class="icon-bar"></span>
-                                  <span class="icon-bar"></span>
-                                </button>
-                                <a class="navbar-brand" href="#">Flask 기반의 파이썬 웹 프로그래밍</a>
-                            </div>
-                            <div id="navbar" class="navbar-collapse collapse">
-                                <ul class="nav navbar-nav">
-                                    <li class="active"><a href="#">이 웹사이트는?</a></li>
-                                    <li><a href="#">윈도우 기반의 파이썬 개발환경</a></li>
+                  <div class="navbar navbar-default" role="navigation">
+                    <div class="navbar-header">
+                      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                      </button>
+                      <span class="visible-xs navbar-brand">Sidebar menu</span>
+                    </div>
+                    <div class="navbar-collapse collapse sidebar-navbar-collapse">
+                      <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">이 웹사이트는?</a></li>
+                        <li><a href="#">윈도우 기반의 파이썬 개발환경</a></li>
 
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                           aria-haspopup="true" aria-expanded="false">Jenkins 연동 <span class="caret"></span></a>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#">Github 연동</a></li>
-                                            <li><a href="#">BitBucket 연동</a></li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="#">수동 폴링</a></li>
-                                            <li><a href="#">자동 폴링</a></li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="#">소스코드 배포</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="#">독자문의</a></li>
-                                </ul>
-                                <ul class="nav navbar-nav navbar-right">
-                                    <li class="active"><a href="./">Default <span class="sr-only">(current)</span></a></li>
-                                    <li><a href="../navbar-static-top/"></a></li>
-                                    <li><a href="../navbar-fixed-top/">Fixed top</a></li>
-                                </ul>
-                            </div><!--/.nav-collapse -->
-                        </div><!--/.container-fluid -->
-                    </nav>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-haspopup="true" aria-expanded="false">Jenkins 연동 <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Github 연동</a></li>
+                                <li><a href="#">BitBucket 연동</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">수동 폴링</a></li>
+                                <li><a href="#">자동 폴링</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">소스코드 배포</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">독자문의</a></li>
+                    </ul>
+                    </div><!--/.nav-collapse -->
+                  </div>
                 </div>
-            </div>
-        
-            <div class="col-sm-10">
+              </div>
+              <div class="col-sm-10">
                 {% block content_block %}
                 {% endblock %}
+              </div>
             </div>
         </div>
 
