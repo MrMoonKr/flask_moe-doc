@@ -39,7 +39,7 @@
                     padding: 15px;
                 }
                 .row.content {height: auto;}
-                
+
                 .navbar-collapse {
                     height: auto;
                     border-top: 0;
@@ -81,20 +81,26 @@
     </head>
     <body>
         <div class="container-fluid">
-            <nav class="row content">
-                <nav class="col-sm-2 sidenav navbar navbar-default" role="navigation">
-                    <h4>Flask 기반의 파이썬 웹 프로그래밍</h4>
-                    <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                          <span class="sr-only">Toggle navigation</span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#">Flask 기반의 파이썬 웹 프로그래밍</a>
+                    </div>
+                    <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
-                            <li class="active"><a href="#section1">이 웹사이트는?</a></li>
-                            <li><a href="#section2">윈도우 기반의 파이썬 개발환경</a></li>
+                            <li class="active"><a href="#">이 웹사이트는?</a></li>
+                            <li><a href="#">윈도우 기반의 파이썬 개발환경</a></li>
+
                             <li class="dropdown">
-                                <a class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
-                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    Jenkins 연동
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                   aria-haspopup="true" aria-expanded="false">Jenkins 연동 <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
                                     <li><a href="#">Github 연동</a></li>
                                     <li><a href="#">BitBucket 연동</a></li>
                                     <li role="separator" class="divider"></li>
@@ -104,22 +110,20 @@
                                     <li><a href="#">소스코드 배포</a></li>
                                 </ul>
                             </li>
-                            <li><a href="#section2">독자 문의</a></li>
-                        </ul><br>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search Blog..">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
-                                    <span class="glyphicon glyphicon-search"></span>
-                                </button>
-                            </span>
-                        </div>
-                    </div>
-                </nav>
-                <div class="col-sm-10">
-                    {% block content_block %}
-                    {% endblock %}
-                </div>
+                            <li><a href="#">독자문의</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="active"><a href="./">Default <span class="sr-only">(current)</span></a></li>
+                            <li><a href="../navbar-static-top/"></a></li>
+                            <li><a href="../navbar-fixed-top/">Fixed top</a></li>
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div><!--/.container-fluid -->
+            </nav>
+
+            <div class="col-sm-10">
+                {% block content_block %}
+                {% endblock %}
             </div>
         </div>
 
