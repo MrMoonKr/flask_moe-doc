@@ -1,10 +1,77 @@
 {% extends 'base.html' %}
 
 {% block css_block %}
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; text-indent: 18.0px; font: 14.0px 'Nanum Gothic'}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; text-indent: 18.0px; font: 14.0px 'Nanum Gothic'; min-height: 16.0px}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px 'Nanum Gothic'; min-height: 16.0px}
+    li.li3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px 'Nanum Gothic'}
+    ol.ol1 {list-style-type: decimal}
+  </style>
 {% endblock %}
 
 {% block content_block %}
     <h2>Jenkins 연동 > Bitbucket 연동</h2>
     <div style="padding-top: 20px; padding-bottom: 20px;">
+        <p class="p1"><a id="doc1"></a>BitBucket은 오픈 소스 저장로서 GitHub과 함께 인기있는 저장소입니다. BitBucket은 공동 작업자가 5인 미만인 경우 자유롭게 Private 저장소 생성이 가능하기 때문에 개인 프로젝트 관리에 매우 유용합니다.</p>
+        <p class="p2"><br></p>
+        <p class="p1">Jenkins에서 제공되는 BitBucket 플러그인은 GitHub 플러그인이 제공하는 기능과 달리 다른 기능을 제공합니다. GitHub 플러그인이 GitHub Project 연동과 Build Trigger 기능을 제공한다면 BitBucket Plugin은 Build Trigger 기능만을 제공합니다.</p>
+        <p class="p2"><br></p>
+        <p class="p1">BitBucket 플러그인을 연동하려면 다음과 같은 준비가 필요합니다.</p>
+        <p class="p2"><br></p>
+        <ol class="ol1">
+          <li class="li3">Jenkins 서버</li>
+          <li class="li3">BitBucket 계정</li>
+          <li class="li3">BitBucket 프로젝트</li>
+        </ol>
+        <p class="p2"><br></p>
+        <p class="p1">Jenkins 서버에 BitBucket 플러그인 설치</p>
+        <p class="p1">Jenkins에 BitBucket 플러그인 설치를 위해 “Jenkins 관리 &gt;<span class="Apple-converted-space">  </span>플러그인 관리 &gt; 설치 가능”으로 이동해서 필터 란에 “bitbucket plugin”을 입력합니다.</p>
+        <p class="p2"><br></p>
+        <p class="p4"><img src="/static/images/jenkins_bitbucket/Pasted Graphic 22.png" width="600" height="136" alt="Image"></p>
+        <p class="p2"><br></p>
+        <p class="p1">설치할 플러그인이 검색되면 좌측의 체크박스를 클릭하고 “지금 다운로드하고 재시작 후 설치하기” 버튼을 클릭합니다.</p>
+        <p class="p2"><br></p>
+        <p class="p4"><img src="/static/images/jenkins_bitbucket/Pasted Graphic 23.png" width="398" height="298" alt="Image"></p>
+        <p class="p5"><br></p>
+        <p class="p1">BitBucket 플러그인은 Mercurial 플러그인을 추가로 설치합니다. BitBucket 플러그인 설치가 끝나면 “설치가 끝나고 실행중인 작업이 없으면 Jenkins 재시작” 체크박스를 클릭합니다. 이 체크박스를 클릭하면 Jenkins 서버가 바로 재시작됩니다. 이것으로 BitBucket 플러그인 설치가 완료되었습니다.</p>
+        <p class="p2"><br></p>
+        <p class="p1"><b>Jenkins Job에 BitBucket Plugin을 사용하도록 설정</b></p>
+        <p class="p1">Jenkins BitBucket 플러그인을 사용하려면 Jenkins 설정과 BitBucket 사이트 설정. 이렇게 2번의 설정 작업을 따로 합니다. 먼저 Jenkins 설정을 할 차례입니다.</p>
+        <p class="p2"><br></p>
+        <p class="p1">Jenkins Job에서 BitBucket 플러그인을 사용하려면 소스 저장소는 Git을 사용하도록 하고 BitBucket Git 저장소 경로를 설정하고 “빌드 유발”을 섹션을 설정합니다.</p>
+        <p class="p2"><br></p>
+        <p class="p4"><img src="/static/images/jenkins_bitbucket/Pasted Graphic 24.png" width="600" height="346" alt="Image"></p>
+        <p class="p2"><br></p>
+        <p class="p1">위 화면은 “소스 코드 관리”부분에서 BitBucket을 Git Repository로 사용하도록 설정한 것입니다. 여러분의 프로젝트마다 Git Repository 주소는 다를 것입니다. 그리고 BitBucket에 변경된 내역이 반영될때 Build 할 수 있도록 빌드 유발 섹션을 설정합니다.</p>
+        <p class="p2"><br></p>
+        <p class="p4"><img src="/static/images/jenkins_bitbucket/Pasted Graphic 25.png" width="600" height="116" alt="Image"></p>
+        <p class="p2"><br></p>
+        <p class="p1">빌드 유발 섹션에서는 “Build when a change is pushed to BitBucket”을 선택하고 저장하면 됩니다.</p>
+        <p class="p2"><br></p>
+        <p class="p1">이제 BitBucket 사이트에서 Jenkins 서버를 호출하도록 설정합니다.</p>
+        <p class="p2"><br></p>
+        <p class="p1">Jenkins Job으로 설정한 BitBucket 프로젝트의 설정 페이지로 이동합니다. 필자의 경우는 이 책의 웹 사이트인 flask_moe 프로젝트가 대상입니다.</p>
+        <p class="p2"><br></p>
+        <p class="p4"><img src="/static/images/jenkins_bitbucket/Pasted Graphic 26.png" width="600" height="256" alt="Image"></p>
+        <p class="p2"><br></p>
+        <p class="p1">BitBucket 설정 페이지로 들어오면 Integrations &gt; Service 메뉴를 클릭합니다. 그럼 위와 같은 화면이 나옵니다.</p>
+        <p class="p2"><br></p>
+        <p class="p1">그러고 나면 “Add service” 버튼 옆에 있는 셀렉트 박스를 클릭하고 Jenkins를 입력합니다.</p>
+        <p class="p2"><br></p>
+        <p class="p4"><img src="/static/images/jenkins_bitbucket/Pasted Graphic 27.png" width="600" height="91" alt="Image"></p>
+        <p class="p2"><br></p>
+        <p class="p1">그럼 셀렉트 박스 옵션 목록에서 Jenkins가 파란색으로 보여지면 목록에서 Jenkins를 클릭하거나 엔터키를 누르고 “Add service”<span class="Apple-converted-space">  </span>버튼을 클릭합니다. 그럼 Jenkins 서비스 설정 다이얼로그가 나옵니다.</p>
+        <p class="p2"><br></p>
+        <p class="p4"><img src="/static/images/jenkins_bitbucket/Pasted Graphic 28.png" width="495" height="328" alt="Image"></p>
+        <p class="p2"><br></p>
+        <p class="p1">위의 다이얼로그가 나오면 Endpoint와 Project name을 설정하면 되는데 Endpoint에는 Jenkins 서버 주소를 입력합니다. 필자는 Jenkins가 104.155.222.174 서버에 8080 포트로 동작합니다.</p>
+        <p class="p2"><br></p>
+        <p class="p1">Project name에는 Jenkins Job에 지정한 이름을 그대로 입력해야 합니다. 여러분이 Jenkins Job에 “BitBucket 연동”과 같이 지정했다면 Project name에도 “BitBucket 연동”을 지정해야 합니다. 그리고 “Save” 버튼을 클릭합니다.</p>
+        <p class="p2"><br></p>
+        <p class="p1">이렇게 하고 나면 Jenkins와 BitBucket 플러그인 설정이 완료된 것입니다. 이제 BitBucket Repository에 변경 내용이 커밋되면 Jenkins가 알아서 Build 작업을 수행하게 됩니다.</p>
+        <p class="p2"><br></p>
+        <p class="p1">이것으로 Jenkins와 BitBucket 플러그인 설정이 완료되었습니다. 고생하셨습니다.</p>
     </div>
 {% endblock %}
