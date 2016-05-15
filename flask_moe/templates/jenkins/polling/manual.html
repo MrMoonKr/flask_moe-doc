@@ -1,8 +1,53 @@
 {% extends 'base.html' %}
 
 {% block css_block %}
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; text-indent: 18.0px; font: 14.0px AppleMyungjo}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; text-indent: 18.0px; font: 14.0px AppleMyungjo; min-height: 16.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+  </style>
 {% endblock %}
 
 {% block content_block %}
     <h2>Jenkins 연동 > 수동 폴링</h2>
+    <div style="padding-top: 20px; padding-bottom: 20px;">
+        <p class="p1"><a id="doc1"></a>Jenkins는 Build 및 프로그램 테스트를 위해 수동이나 자동으로 Build Task를 실행해야 합니다. 그럼 Build Task를 언제 실행해야 하면 좋을까요? 필자의 프로젝트는 혼자 개발하는 것이 많아 Build는 Jenkins에서 “Build Now”을 클릭해서 수동으로 Build를 실행합니다.</p>
+        <p class="p2"><br></p>
+        <p class="p1">하지만 팀 단위로 움직이거나 일정에 따라 움직이는 프로젝트는 수동으로 Build 작업을 하기는 쉽지 않습니다. 그런 이유로 Jenkins가 알아서 Git Repository에 접속해서 소스를 내려받아 Build를 실행하게 해야합니다.</p>
+        <p class="p2"><br></p>
+        <p class="p1">이런 작업을 폴링(Polling)이라고 부른데 폴링은 수동과 자동으로 나눌 수 있습니다. 사실 자동 폴링은 Push와 같은 의미로 사용됩니다. 이 절에서는 수동 폴링에 대해 먼저 알아보겠습니다.</p>
+        <p class="p2"><br></p>
+        <p class="p1">Jenkins에서 폴링은 Jenkins Job 설정 화면의 “빌드 유발” 섹션에서 쉽게 사용할 수 있습니다.</p>
+        <p class="p2"><br></p>
+        <p class="p3"><img src="/static/images/jenkins_manual_polling/Pasted Graphic 29.png" alt="Image"></p>
+        <p class="p2"><br></p>
+        <p class="p1">위의 섹션을 찾았으면 “Poll SCM”을 클릭하면 수동 폴링할 주기를 설정하는 텍스트 박스가 나옵니다. 여기에서 Polling Schedule을 입력합니다. Polling Schedule은 다음 순서 따라 탭 또는 화이트 스페이스(빈 칸) 1칸으로 구분합니다.</p>
+        <p class="p2"><br></p>
+        <p class="p1">분: 0과 59 사이의 값을 지정합니다.</p>
+        <p class="p1">시: 0과 23 사이의 값을 지정합니다.</p>
+        <p class="p1">일: 1과 31 사이의 값을 지정합니다.</p>
+        <p class="p1">월: 1과 12 사이의 값을 지정합니다.</p>
+        <p class="p1">요일: 0부터 7 사이의 값을 지정하는데 0은 일요일, 1은 월요일 등의 순서로 지정합니다.</p>
+        <p class="p2"><br></p>
+        <p class="p1">이 순서에는 다음과 같은 형태의 값의 지정이 가능합니다.</p>
+        <p class="p2"><br></p>
+        <p class="p1">* : 모든 유효한 값 지정</p>
+        <p class="p1">M-N : 유효한 값의 범위 지정</p>
+        <p class="p1">M-N/X 또는 */X : 유효한 값 또는 범위에서 인터벌(간격) 단위 시간 지정</p>
+        <p class="p1">A,B,...,Z : 유효한 값을 개별값으로 나열</p>
+        <p class="p2"><br></p>
+        <p class="p1">예를 들어 폴링 주기를 매월 1일 설정한다면 다음과 같이 수동 폴링 주기를 입력합니다.</p>
+        <p class="p2"><br></p>
+        <p class="p1">* * 1 * *</p>
+        <p class="p2"><span class="Apple-converted-space"> </span></p>
+        <p class="p1">만약 같은 방식으로 매일 24시 정각에 폴링을 해야 한다면 다음과 같이 설정합니다.</p>
+        <p class="p2"><br></p>
+        <p class="p1">0 24 * * *</p>
+        <p class="p2"><br></p>
+        <p class="p1">이렇게 폴링 주기를 설정하는 방법은 처음엔 다소 어렵고 적응하기 어려울 수 있지만 비교적 상세한 설정이 가능하므로 사용 방법을 익혀두시는게 좋습니다. 설정을 완료하면 “저장” 버튼을 클릭해 수동 폴링 설정을 마무리 합니다.</p>
+        <p class="p2"><br></p>
+        <p class="p3"><img src="/static/images/jenkins_manual_polling/Pasted Graphic 16.png" alt="Image"></p>
+        <p class="p2"><br></p>
+        <p class="p1">이것으로 Jenkins에서 수동 폴링 설정을 완료했습니다.</p>
+    </div>
 {% endblock %}
