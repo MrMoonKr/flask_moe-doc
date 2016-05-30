@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Sequence, Text
-from database import Base
+from flask_moe.database import Base
 
 class Source(Base):
     __tablename__ = 'tbl_sources'

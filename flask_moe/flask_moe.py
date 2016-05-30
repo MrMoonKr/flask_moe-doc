@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, url_for, redirect, send_file, flash
-from database import db_session
-from models import Source
-import lib
+from flask_moe.database import db_session
+from flask_moe.models import Source
+import flask_moe.lib
 from io import StringIO
 from formencode import htmlfill
 from six import BytesIO
