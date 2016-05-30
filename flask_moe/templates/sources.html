@@ -5,22 +5,244 @@
 
 {% block content_block %}
     <h2>소스코드</h2>
-    <table class="table">
-    <thead>
-    <tr>
-        <th style="width: 10%;">코드번호</th>
-        <th>코드 제목</th>
-        <th>다운로드</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for entry in records %}
-    <tr>
-        <td>{{ entry.code_num }}</td>
-        <td>{{ entry.description }}</td>
-        <td><a href="/source/{{ entry.id }}/download">다운로드</a></td>
-    </tr>
-    {% endfor %}
-    </tbody>
-    </table>
+    <div>
+        <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#chapter1" role="tab" data-toggle="tab">1장</a></li>
+        <li role="presentation"><a href="#chapter2" role="tab" data-toggle="tab">2장</a></li>
+        <li role="presentation"><a href="#chapter3" role="tab" data-toggle="tab">3장</a></li>
+        <li role="presentation"><a href="#chapter4" role="tab" data-toggle="tab">4장</a></li>
+        <li role="presentation"><a href="#chapter5" role="tab" data-toggle="tab">5장</a></li>
+        <li role="presentation"><a href="#chapter6" role="tab" data-toggle="tab">6장</a></li>
+        <li role="presentation"><a href="#chapter7" role="tab" data-toggle="tab">7장</a></li>
+        <li role="presentation"><a href="#chapter8" role="tab" data-toggle="tab">8장</a></li>
+        <li role="presentation"><a href="#chapter9" role="tab" data-toggle="tab">9장</a></li>
+        <li role="presentation"><a href="#chapter10" role="tab" data-toggle="tab">10장</a></li>
+        <li role="presentation"><a href="#chapter11" role="tab" data-toggle="tab">11장</a></li>
+      </ul>
+    
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="chapter1">
+            <table class="table">
+            <thead>
+            <tr>
+                <th style="width: 10%;">코드번호</th>
+                <th>코드 제목</th>
+                <th>다운로드</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entry in chapter1_records %}
+            <tr>
+                <td>{{ entry.code_num }}</td>
+                <td>{{ entry.description }}</td>
+                <td><a href="/source/{{ entry.id }}/download">다운로드</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="chapter2">
+            <table class="table">
+            <thead>
+            <tr>
+                <th style="width: 10%;">코드번호</th>
+                <th>코드 제목</th>
+                <th>다운로드</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entry in chapter2_records %}
+            <tr>
+                <td>{{ entry.code_num }}</td>
+                <td>{{ entry.description }}</td>
+                <td><a href="/source/{{ entry.id }}/download">다운로드</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="chapter3">
+            <table class="table">
+            <thead>
+            <tr>
+                <th style="width: 10%;">코드번호</th>
+                <th>코드 제목</th>
+                <th>다운로드</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entry in chapter3_records %}
+            <tr>
+                <td>{{ entry.code_num }}</td>
+                <td>{{ entry.description }}</td>
+                <td><a href="/source/{{ entry.id }}/download">다운로드</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="chapter4">
+            <table class="table">
+            <thead>
+            <tr>
+                <th style="width: 10%;">코드번호</th>
+                <th>코드 제목</th>
+                <th>다운로드</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entry in chapter4_records %}
+            <tr>
+                <td>{{ entry.code_num }}</td>
+                <td>{{ entry.description }}</td>
+                <td><a href="/source/{{ entry.id }}/download">다운로드</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="chapter5">
+            <table class="table">
+            <thead>
+            <tr>
+                <th style="width: 10%;">코드번호</th>
+                <th>코드 제목</th>
+                <th>다운로드</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entry in chapter5_records %}
+            <tr>
+                <td>{{ entry.code_num }}</td>
+                <td>{{ entry.description }}</td>
+                <td><a href="/source/{{ entry.id }}/download">다운로드</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="chapter6">
+            <table class="table">
+            <thead>
+            <tr>
+                <th style="width: 10%;">코드번호</th>
+                <th>코드 제목</th>
+                <th>다운로드</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entry in chapter6_records %}
+            <tr>
+                <td>{{ entry.code_num }}</td>
+                <td>{{ entry.description }}</td>
+                <td><a href="/source/{{ entry.id }}/download">다운로드</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="chapter7">
+            <table class="table">
+            <thead>
+            <tr>
+                <th style="width: 10%;">코드번호</th>
+                <th>코드 제목</th>
+                <th>다운로드</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entry in chapter7_records %}
+            <tr>
+                <td>{{ entry.code_num }}</td>
+                <td>{{ entry.description }}</td>
+                <td><a href="/source/{{ entry.id }}/download">다운로드</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="chapter8">
+            <table class="table">
+            <thead>
+            <tr>
+                <th style="width: 10%;">코드번호</th>
+                <th>코드 제목</th>
+                <th>다운로드</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entry in chapter8_records %}
+            <tr>
+                <td>{{ entry.code_num }}</td>
+                <td>{{ entry.description }}</td>
+                <td><a href="/source/{{ entry.id }}/download">다운로드</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="chapter9">
+            <table class="table">
+            <thead>
+            <tr>
+                <th style="width: 10%;">코드번호</th>
+                <th>코드 제목</th>
+                <th>다운로드</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entry in chapter9_records %}
+            <tr>
+                <td>{{ entry.code_num }}</td>
+                <td>{{ entry.description }}</td>
+                <td><a href="/source/{{ entry.id }}/download">다운로드</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="chapter10">
+            <table class="table">
+            <thead>
+            <tr>
+                <th style="width: 10%;">코드번호</th>
+                <th>코드 제목</th>
+                <th>다운로드</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entry in chapter10_records %}
+            <tr>
+                <td>{{ entry.code_num }}</td>
+                <td>{{ entry.description }}</td>
+                <td><a href="/source/{{ entry.id }}/download">다운로드</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="chapter11">
+            <table class="table">
+            <thead>
+            <tr>
+                <th style="width: 10%;">코드번호</th>
+                <th>코드 제목</th>
+                <th>다운로드</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entry in chapter11_records %}
+            <tr>
+                <td>{{ entry.code_num }}</td>
+                <td>{{ entry.description }}</td>
+                <td><a href="/source/{{ entry.id }}/download">다운로드</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
 {% endblock %}

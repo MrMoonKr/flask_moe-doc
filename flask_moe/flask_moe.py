@@ -150,11 +150,42 @@ def qna_delete_post():
 def source_list():
     current_path = "source"
 
-    records = db_session.query(Source).order_by(asc(Source.id))
+    chapter1_records = db_session.query(Source).filter(
+        Source.code_num.startswith('1-')).order_by(asc(Source.id))
+    chapter2_records = db_session.query(Source).filter(
+        Source.code_num.startswith('2-')).order_by(asc(Source.id))
+    chapter3_records = db_session.query(Source).filter(
+        Source.code_num.startswith('3-')).order_by(asc(Source.id))
+    chapter4_records = db_session.query(Source).filter(
+        Source.code_num.startswith('4-')).order_by(asc(Source.id))
+    chapter5_records = db_session.query(Source).filter(
+        Source.code_num.startswith('5-')).order_by(asc(Source.id))
+    chapter6_records = db_session.query(Source).filter(
+        Source.code_num.startswith('6-')).order_by(asc(Source.id))
+    chapter7_records = db_session.query(Source).filter(
+        Source.code_num.startswith('7-')).order_by(asc(Source.id))
+    chapter8_records = db_session.query(Source).filter(
+        Source.code_num.startswith('8-')).order_by(asc(Source.id))
+    chapter9_records = db_session.query(Source).filter(
+        Source.code_num.startswith('9-')).order_by(asc(Source.id))
+    chapter10_records = db_session.query(Source).filter(
+        Source.code_num.startswith('10-')).order_by(asc(Source.id))
+    chapter11_records = db_session.query(Source).filter(
+        Source.code_num.startswith('11-')).order_by(asc(Source.id))
 
     tpl_vars = dict(
         current_path=current_path,
-        records=records
+        chapter1_records=chapter1_records,
+        chapter2_records=chapter2_records,
+        chapter3_records=chapter3_records,
+        chapter4_records=chapter4_records,
+        chapter5_records=chapter5_records,
+        chapter6_records=chapter6_records,
+        chapter7_records=chapter7_records,
+        chapter8_records=chapter8_records,
+        chapter9_records=chapter9_records,
+        chapter10_records=chapter10_records,
+        chapter11_records=chapter11_records
     )
 
     return render_template('sources.html', **tpl_vars)
@@ -232,6 +263,5 @@ def shutdown_session(exception=None):
     db_session.remove()
 
 if __name__ == "__main__":
-    print(app.url_map)
     app.debug=True
     app.run()
