@@ -5,4 +5,22 @@
 
 {% block content_block %}
     <h2>소스코드</h2>
+    <table class="table">
+    <thead>
+    <tr>
+        <th style="width: 10%;">코드번호</th>
+        <th>코드 제목</th>
+        <th>다운로드</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for entry in records %}
+    <tr>
+        <td>{{ entry.code_num }}</td>
+        <td>{{ entry.description }}</td>
+        <td><a href="/source/{{ entry.id }}/download">다운로드</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
 {% endblock %}
