@@ -1,8 +1,7 @@
 from flask import Flask, render_template, request, url_for, redirect, send_file, flash
 from flask_moe.database import db_session
 from flask_moe.models import Source
-import flask_moe.lib
-from io import StringIO
+import zipfile
 from formencode import htmlfill
 from six import BytesIO
 from sqlalchemy import asc
@@ -230,15 +229,46 @@ def source_write_post():
 
 @app.route("/source/<id>/download")
 def source_download(id):
-    record = db_session.query(Source).filter(Source.id == id).first()
-
+    attachment_filename = ''
     strIO = BytesIO()
-    strIO.write(record.file_content.encode('utf-8'))
-    strIO.seek(0)
 
-    attachment_filename = "%s.py" % record.code_num
-    if "." in record.code_num:
-        attachment_filename = record.code_num
+    if id.isnumeric():
+        record = db_session.query(Source).filter(Source.id == id).first()
+
+        strIO = BytesIO()
+        strIO.write(record.file_content.encode('utf-8'))
+        strIO.seek(0)
+
+        attachment_filename = "%s.py" % record.code_num
+        if "." in record.code_num:
+            attachment_filename = record.code_num
+    else:
+        strIO = BytesIO()
+        zip_file = zipfile.ZipFile(strIO, 'w')
+
+        records = db_session.query(Source)
+        if id.startswith('chapter'):
+            records = records.filter(Source.code_num.startswith('{0}-'.format(id[7:])))
+
+        for record in records:
+            file_cont = BytesIO()
+            file_cont.write(record.file_content.encode('utf-8'))
+            file_cont.seek(0)
+
+            attachment_filename = "%s.py" % record.code_num
+            if "." in record.code_num:
+                attachment_filename = record.code_num
+
+            zip_file.writestr(attachment_filename, file_cont.getvalue())
+
+        zip_file.close()
+
+        strIO.seek(0)
+
+        if id == 'all':
+            attachment_filename = 'sources.zip'
+        else:
+            attachment_filename = 'sources_{0}.zip'.format(id)
 
     return send_file(strIO, as_attachment=True,
                      attachment_filename=attachment_filename)
@@ -256,6 +286,7 @@ def source_view(code_num):
 
     tmpl = render_template('sources/write.html', **tpl_vars)
     return htmlfill.render(tmpl, record.to_dict())
+
 
 
 @app.teardown_appcontext
