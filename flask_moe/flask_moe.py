@@ -80,69 +80,143 @@ def jenkins_deploy():
     return render_template('jenkins/deploy.html', **tpl_vars)
 
 
-@app.route("/qna")
-def qna_list():
-    current_path = "qna"
+@app.route("/flask_web_qna")
+def flask_web_qna_list():
+    current_path = "flask_web_qna"
+    tpl_vars = dict(
+        current_path=current_path
+    )
+    return render_template('qna/flask_web_qna.html', **tpl_vars)
+
+
+@app.route("/flask_web_qna/<article_id>")
+def flask_web_qna_view(article_id):
+    current_path = "flask_web_qna"
 
     tpl_vars = dict(
         current_path=current_path
     )
-    return render_template('qna/list.html', **tpl_vars)
+    return render_template('qna/flask_web_qna_view.html', **tpl_vars)
 
 
-@app.route("/qna/add")
-def qna_add_get():
-    current_path = "qna"
-
-    tpl_vars = dict(
-        current_path=current_path
-    )
-    return render_template('qna/add.html', **tpl_vars)
-
-
-@app.route("/qna/add", methods=["POST"])
-def qna_add_post():
-    return ""
-
-
-@app.route("/qna/<seq>")
-def qna_view():
-    current_path = "qna"
+@app.route("/flask_web_qna/<article_id>/modify")
+def flask_web_qna_modify_view(article_id):
+    current_path = "flask_web_qna"
 
     tpl_vars = dict(
         current_path=current_path
     )
-    return render_template('qna/view.html', **tpl_vars)
+    return render_template('qna/flask_web_qna_modify.html', **tpl_vars)
 
 
-@app.route("/qna/<seq>/modify")
-def qna_modify_get():
-    current_path = "qna"
-
-    tpl_vars = dict(
-        current_path=current_path
-    )
-    return render_template('qna/modify.html', **tpl_vars)
-
-
-@app.route("/qna/<seq>/modify", methods=["POST"])
-def qna_modify_post():
-    return ""
-
-
-@app.route("/qna/<seq>/delete")
-def qna_delete_get():
-    current_path = "qna"
+@app.route("/flask_web_qna/<article_id>/modify", methods=["POST"])
+def flask_web_qna_modify(article_id):
+    current_path = "flask_web_qna"
 
     tpl_vars = dict(
         current_path=current_path
     )
-    return render_template('qna/delete.html', **tpl_vars)
+    return tpl_vars
 
 
-@app.route("/qna/<seq>/delete", methods=["POST"])
-def qna_delete_post():
-    return ""
+@app.route("/flask_web_qna/add")
+def flask_web_qna_add_view(article_id):
+    current_path = "flask_web_qna"
+
+    tpl_vars = dict(
+        current_path=current_path
+    )
+    return render_template('qna/flask_web_qna_write.html', **tpl_vars)
+
+
+@app.route("/flask_web_qna/add", methods=["POST"])
+def flask_web_qna_add(article_id):
+    current_path = "flask_web_qna"
+
+    tpl_vars = dict(
+        current_path=current_path
+    )
+    return tpl_vars
+
+
+@app.route("/flask_web_qna/password", methods=["POST"])
+def flask_web_qna_password(article_id):
+    current_path = "flask_web_qna"
+
+    tpl_vars = dict(
+        current_path=current_path
+    )
+    return tpl_vars
+
+
+@app.route("/vuejs_first_step")
+def vuejs_first_step_list():
+    current_path = "vuejs_first_step"
+
+    tpl_vars = dict(
+        current_path=current_path
+    )
+    return render_template('qna/vuejs_first_step.html', **tpl_vars)
+
+
+@app.route("/vuejs_first_step/<article_id>")
+def vuejs_first_step_view(article_id):
+    current_path = "vuejs_first_step"
+
+    tpl_vars = dict(
+        current_path=current_path
+    )
+    return render_template('qna/vuejs_first_step_view.html', **tpl_vars)
+
+
+@app.route("/vuejs_first_step/<article_id>/modify")
+def vuejs_first_step_modify_view(article_id):
+    current_path = "vuejs_first_step"
+
+    tpl_vars = dict(
+        current_path=current_path
+    )
+    return render_template('qna/vuejs_first_step_write.html', **tpl_vars)
+
+
+@app.route("/vuejs_first_step/<article_id>/modify", methods=["POST"])
+def vuejs_first_step_modify(article_id):
+    current_path = "vuejs_first_step"
+
+    tpl_vars = dict(
+        current_path=current_path
+    )
+    return tpl_vars
+
+
+@app.route("/vuejs_first_step/add")
+def vuejs_first_step_add_view(article_id):
+    current_path = "vuejs_first_step"
+
+    tpl_vars = dict(
+        current_path=current_path
+    )
+    return render_template('qna/vuejs_first_step_write.html', **tpl_vars)
+
+
+@app.route("/vuejs_first_step/add", methods=["POST"])
+def vuejs_first_step_add(article_id):
+    current_path = "vuejs_first_step"
+
+    tpl_vars = dict(
+        current_path=current_path
+    )
+    return tpl_vars
+
+
+@app.route("/vuejs_first_step/password", methods=["POST"])
+def vuejs_first_step_password(article_id):
+    current_path = "flask_web_qna"
+
+    tpl_vars = dict(
+        current_path=current_path
+    )
+    return tpl_vars
 
 
 @app.route("/source")
@@ -288,10 +362,10 @@ def source_view(code_num):
     return htmlfill.render(tmpl, record.to_dict())
 
 
-
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     db_session.remove()
+
 
 if __name__ == "__main__":
     app.debug=True
