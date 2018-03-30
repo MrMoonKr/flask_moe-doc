@@ -4,6 +4,36 @@
 {% endblock %}
 
 {% block content_block %}
-    <h2>독자문의</h2>
-    <p>게시판 개발중에 있습니다. 당분간 독자 문의는 search5@gmail.com 으로 보내주세요. 고맙습니다.</p>
+    <h2>Flask 기반의 파이썬 웹 프로그래밍 독자문의</h2>
+    <div class="row">
+        <div class="col-sm-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>조회수</th>
+                        <th>생성일</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in records %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td><a href="{{ url_for('qna_view', board_section='flask_web_qna', article_id=record.id) }}">{{ record.title }}</a></td>
+                        <td>{{ record.user_name }}</td>
+                        <td>{{ record.hit }}</td>
+                        <td>{{ record.create_date.strftime('%Y-%m-%d') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-push-11 col-sm-1">
+            <a class="btn btn-primary" href="{{ url_for('qna_add_view', board_section='flask_web_qna') }}">새 문의 작성</a>
+        </div>
+    </div>
 {% endblock %}

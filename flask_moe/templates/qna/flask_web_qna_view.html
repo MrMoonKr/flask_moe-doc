@@ -1,8 +1,45 @@
 {% extends 'base.html' %}
 
 {% block css_block %}
+<script src="https://unpkg.com/vue"></script>
 {% endblock %}
 
 {% block content_block %}
-    <h2>독자문의 조회</h2>
+    <h3></h3>
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="panel panel-default" id="view">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ record.title }}</h3>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">작성자</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static" id="inputEmail3">{{ record.author }}</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword3" class="col-sm-2 control-label">내용</label>
+                            <div class="col-sm-10">
+                                <div class="form-control-static" id="inputEmail3">{{ record.content | safe }}</div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel-footer text-right">
+                    <a href="{{ url_for('qna_list', board_section='flask_web_qna') }}" class="btn btn-primary">목록</a>
+                    <a href="{{ url_for('qna_modify_view', board_section='flask_web_qna', article_id=record.id) }}" class="btn btn-warning">수정</a>
+                    <button class="btn btn-danger">삭제</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        new Vue({
+            el: "#view",
+
+        });
+    </script>
 {% endblock %}

@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, url_for, redirect, send_file, flash
+from flask import Flask, render_template, request, url_for, redirect, send_file, flash, jsonify
 from flask_moe.database import db_session
-from flask_moe.models import Source
+from flask_moe.models import Source, BoardQna, BoardQnaReply
 import zipfile
 from formencode import htmlfill
 from six import BytesIO
 from sqlalchemy import asc
+import datetime
 
 app = Flask(__name__)
 app.config.update(SECRET_KEY='go$Thgy4@Tgha%*gfg48vV')
@@ -80,143 +81,90 @@ def jenkins_deploy():
     return render_template('jenkins/deploy.html', **tpl_vars)
 
 
-@app.route("/flask_web_qna")
-def flask_web_qna_list():
-    current_path = "flask_web_qna"
-    tpl_vars = dict(
-        current_path=current_path
-    )
-    return render_template('qna/flask_web_qna.html', **tpl_vars)
-
-
-@app.route("/flask_web_qna/<article_id>")
-def flask_web_qna_view(article_id):
-    current_path = "flask_web_qna"
+@app.route("/board/<board_section>")
+def qna_list(board_section):
+    records = db_session.query(BoardQna).filter(BoardQna.section == board_section)
 
     tpl_vars = dict(
-        current_path=current_path
+        current_path=board_section,
+        records=records
     )
-    return render_template('qna/flask_web_qna_view.html', **tpl_vars)
+    template_file = 'qna/{}.html'.format(board_section)
+
+    return render_template(template_file, **tpl_vars)
 
 
-@app.route("/flask_web_qna/<article_id>/modify")
-def flask_web_qna_modify_view(article_id):
-    current_path = "flask_web_qna"
+@app.route("/board/<board_section>/<article_id>")
+def qna_view(board_section, article_id):
+    record = db_session.query(BoardQna).filter(BoardQna.section == board_section).filter(BoardQna.id == article_id).first()
 
     tpl_vars = dict(
-        current_path=current_path
+        current_path=board_section,
+        record=record
     )
-    return render_template('qna/flask_web_qna_modify.html', **tpl_vars)
+    template_file = 'qna/{}_view.html'.format(board_section)
+
+    return render_template(template_file, **tpl_vars)
 
 
-@app.route("/flask_web_qna/<article_id>/modify", methods=["POST"])
-def flask_web_qna_modify(article_id):
-    current_path = "flask_web_qna"
+@app.route("/board/<board_section>/<article_id>/modify")
+def qna_modify_view(board_section, article_id):
 
     tpl_vars = dict(
-        current_path=current_path
+        current_path=board_section
     )
-    return tpl_vars
+    template_file = 'qna/{}_modify.html'.format(board_section)
+
+    return render_template(template_file, **tpl_vars)
 
 
-@app.route("/flask_web_qna/add")
-def flask_web_qna_add_view(article_id):
-    current_path = "flask_web_qna"
+@app.route("/board/<board_section>/<article_id>/modify", methods=["POST"])
+def qna_modify(board_section, article_id):
 
     tpl_vars = dict(
-        current_path=current_path
+        current_path=board_section
     )
-    return render_template('qna/flask_web_qna_write.html', **tpl_vars)
+    return jsonify(tpl_vars)
 
 
-@app.route("/flask_web_qna/add", methods=["POST"])
-def flask_web_qna_add(article_id):
-    current_path = "flask_web_qna"
+@app.route("/board/<board_section>/add")
+def qna_add_view(board_section):
 
     tpl_vars = dict(
-        current_path=current_path
+        current_path=board_section
     )
-    return tpl_vars
+    template_file = 'qna/{}_write.html'.format(board_section)
+
+    return render_template(template_file, **tpl_vars)
 
 
-@app.route("/flask_web_qna/password", methods=["POST"])
-def flask_web_qna_password(article_id):
-    current_path = "flask_web_qna"
+@app.route("/board/<board_section>/add", methods=["POST"])
+def qna_add(board_section):
+    req_json = request.get_json()
+    
+    record = BoardQna()
+    record.section = board_section
+    record.title = req_json.get('title')
+    record.content = req_json.get('content')
+    record.password = req_json.get('password')
+    record.create_date = datetime.datetime.now()
+    record.hit = 0
+    record.user_name = req_json.get('author')
+    record.ip = request.environ['REMOTE_ADDR']
+
+    db_session.add(record)
+    db_session.commit()
+    
+    return jsonify(dict(success=True))
+
+
+@app.route("/board/<board_section>/password", methods=["POST"])
+def qna_password(board_section, article_id):
 
     tpl_vars = dict(
-        current_path=current_path
+        current_path=board_section
     )
-    return tpl_vars
-
-
-@app.route("/vuejs_first_step")
-def vuejs_first_step_list():
-    current_path = "vuejs_first_step"
-
-    tpl_vars = dict(
-        current_path=current_path
-    )
-    return render_template('qna/vuejs_first_step.html', **tpl_vars)
-
-
-@app.route("/vuejs_first_step/<article_id>")
-def vuejs_first_step_view(article_id):
-    current_path = "vuejs_first_step"
-
-    tpl_vars = dict(
-        current_path=current_path
-    )
-    return render_template('qna/vuejs_first_step_view.html', **tpl_vars)
-
-
-@app.route("/vuejs_first_step/<article_id>/modify")
-def vuejs_first_step_modify_view(article_id):
-    current_path = "vuejs_first_step"
-
-    tpl_vars = dict(
-        current_path=current_path
-    )
-    return render_template('qna/vuejs_first_step_write.html', **tpl_vars)
-
-
-@app.route("/vuejs_first_step/<article_id>/modify", methods=["POST"])
-def vuejs_first_step_modify(article_id):
-    current_path = "vuejs_first_step"
-
-    tpl_vars = dict(
-        current_path=current_path
-    )
-    return tpl_vars
-
-
-@app.route("/vuejs_first_step/add")
-def vuejs_first_step_add_view(article_id):
-    current_path = "vuejs_first_step"
-
-    tpl_vars = dict(
-        current_path=current_path
-    )
-    return render_template('qna/vuejs_first_step_write.html', **tpl_vars)
-
-
-@app.route("/vuejs_first_step/add", methods=["POST"])
-def vuejs_first_step_add(article_id):
-    current_path = "vuejs_first_step"
-
-    tpl_vars = dict(
-        current_path=current_path
-    )
-    return tpl_vars
-
-
-@app.route("/vuejs_first_step/password", methods=["POST"])
-def vuejs_first_step_password(article_id):
-    current_path = "flask_web_qna"
-
-    tpl_vars = dict(
-        current_path=current_path
-    )
-    return tpl_vars
+    return jsonify(tpl_vars)
 
 
 @app.route("/source")
