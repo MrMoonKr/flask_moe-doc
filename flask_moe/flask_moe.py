@@ -97,6 +97,9 @@ def qna_list(board_section):
 @app.route("/board/<board_section>/<article_id>")
 def qna_view(board_section, article_id):
     record = db_session.query(BoardQna).filter(BoardQna.section == board_section).filter(BoardQna.id == article_id).first()
+    record.hit += 1
+
+    db_session.commit()
 
     tpl_vars = dict(
         current_path=board_section,
@@ -109,9 +112,11 @@ def qna_view(board_section, article_id):
 
 @app.route("/board/<board_section>/<article_id>/modify")
 def qna_modify_view(board_section, article_id):
-
+    record = db_session.query(BoardQna).filter(BoardQna.section == board_section).filter(BoardQna.id == article_id).first()
+    
     tpl_vars = dict(
-        current_path=board_section
+        current_path=board_section,
+        record=record
     )
     template_file = 'qna/{}_modify.html'.format(board_section)
 
@@ -120,11 +125,23 @@ def qna_modify_view(board_section, article_id):
 
 @app.route("/board/<board_section>/<article_id>/modify", methods=["POST"])
 def qna_modify(board_section, article_id):
+    req_json = request.get_json()
 
-    tpl_vars = dict(
-        current_path=board_section
-    )
-    return jsonify(tpl_vars)
+    ret_dict = dict(success=False)
+    
+    record = db_session.query(BoardQna).filter(BoardQna.section == board_section).filter(BoardQna.id == article_id).first()
+    record.title = req_json.get('title')
+    record.content = req_json.get('content')
+    record.user_name = req_json.get('author')
+    record.ip = request.environ['REMOTE_ADDR']
+    
+    if req_json.get("password") == record.password:
+        #db_session.add(record)
+        db_session.commit()
+
+        ret_dict["success"] = True
+    
+    return jsonify(ret_dict)
 
 
 @app.route("/board/<board_section>/add")
@@ -158,13 +175,20 @@ def qna_add(board_section):
     return jsonify(dict(success=True))
 
 
-@app.route("/board/<board_section>/password", methods=["POST"])
-def qna_password(board_section, article_id):
+@app.route("/board/<board_section>/<article_id>", methods=["POST"])
+def qna_delete(board_section, article_id):
+    record = db_session.query(BoardQna).filter(BoardQna.section == board_section).filter(BoardQna.id == article_id).first()
 
-    tpl_vars = dict(
-        current_path=board_section
-    )
-    return jsonify(tpl_vars)
+    ret_dict = dict(success=False)
+
+    req_json = request.get_json()
+    if req_json.get("password") == record.password:
+        db_session.delete(record)
+        db_session.commit()
+
+        ret_dict["success"] = True
+    
+    return jsonify(ret_dict)
 
 
 @app.route("/source")
@@ -309,6 +333,23 @@ def source_view(code_num):
     tmpl = render_template('sources/write.html', **tpl_vars)
     return htmlfill.render(tmpl, record.to_dict())
 
+
+def get_host_url():
+    current_host = request.environ["SERVER_NAME"]
+    if len(request.environ.get("SERVER_PORT", "")) > 0:
+        current_host = "{}:{}".format(current_host, request.environ["SERVER_PORT"])
+    
+    if request.environ.get("HTTPS", "") == "on":
+        current_host = "https://{}".format(current_host)
+    else:
+        current_host = "http://{}".format(current_host)
+
+    return current_host
+
+
+@app.context_processor
+def utility_processor():
+    return dict(get_host_url=get_host_url)
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):

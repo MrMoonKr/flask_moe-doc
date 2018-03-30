@@ -2,13 +2,15 @@
 
 {% block css_block %}
 <script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/es6-promise"></script>
 {% endblock %}
 
 {% block content_block %}
     <h3></h3>
     <div class="row">
         <div class="col-sm-8">
-            <div class="panel panel-default" id="view">
+            <div class="panel panel-info">
                 <div class="panel-heading">
                     <h3 class="panel-title">{{ record.title }}</h3>
                 </div>
@@ -17,7 +19,7 @@
                         <div class="form-group">
                             <label for="inputEmail3" class="col-sm-2 control-label">작성자</label>
                             <div class="col-sm-10">
-                                <p class="form-control-static" id="inputEmail3">{{ record.author }}</p>
+                                <p class="form-control-static" id="inputEmail3">{{ record.user_name }}</p>
                             </div>
                         </div>
                         <div class="form-group">
@@ -26,20 +28,101 @@
                                 <div class="form-control-static" id="inputEmail3">{{ record.content | safe }}</div>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">작성시간</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static" id="inputEmail3">{{ record.create_date.strftime("%Y-%m-%d %H:%M:%S") }}</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">조회수</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static" id="inputEmail3">{{ record.hit }}</p>
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <div class="panel-footer text-right">
                     <a href="{{ url_for('qna_list', board_section='flask_web_qna') }}" class="btn btn-primary">목록</a>
                     <a href="{{ url_for('qna_modify_view', board_section='flask_web_qna', article_id=record.id) }}" class="btn btn-warning">수정</a>
-                    <button class="btn btn-danger">삭제</button>
+                    <button data-toggle="modal" data-target="#passwordModal" class="btn btn-danger">삭제</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8">
+            <div id="disqus_thread"></div>
+        </div>
+    </div>
+    <script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    
+    var disqus_config = function () {
+        this.page.url = "{{ get_host_url() }}{{ url_for('qna_view', board_section='flask_web_qna', article_id=record.id) }}";  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'flask_web_qna/{{ record.id }}'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://vuejs-first-step.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    <div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="passwordModalLabel">"{{ record.title }}"을 삭제하시겠습니까?</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group" :class="{ 'has-error': password_error }">
+                            <label for="inputPassword" class="control-label">비밀번호를 입력하세요</label>
+                            <input type="password" class="form-control" id="inputPassword" v-model="password">
+                        </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-primary" @click.prevent="cont_delete">삭제 실행</button>
                 </div>
             </div>
         </div>
     </div>
     <script>
         new Vue({
-            el: "#view",
+            el: "#passwordModal",
+            data: {
+                password: '',
+                password_error: false
+            },
+            methods: {
+                cont_delete: function(event) {
+                    if(confirm("삭제하시면 돌이킬 수 없습니다. 정말 삭제하시겠습니까?")) {
+                        var vm = this;
 
+                        axios.post("{{ url_for('qna_delete', board_section='flask_web_qna', article_id=record.id) }}", {
+                            password: this.password
+                        }).then(function(resp) {
+                            if(resp.data.success) {
+                                alert("게시물울 삭제했습니다. 리스트로 이동합니다");
+                                location.href = "{{ url_for('qna_list', board_section='flask_web_qna') }}";
+                            } else {
+                                alert("비밀번호 입력을 실패했습니다. 다시 입력해주세요");
+                                vm.password_error = true;
+                                console.log(vm);
+                            }
+                        });
+                    }
+                }
+            }
         });
     </script>
 {% endblock %}
