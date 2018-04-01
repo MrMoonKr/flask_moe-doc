@@ -28,7 +28,7 @@
                         password: this.password,
                         content: this.content
                     }).then(function(response) {
-                        if(response.success) {
+                        if(response.data.success) {
                             alert('게시물이 잘 수정되었습니다.');
                             location.href = "{{ url_for('qna_list', board_section='flask_web_qna') }}";
                         } else {
@@ -79,7 +79,7 @@
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button class="btn btn-default" @click.prevent="qna_create">질문 작성</button>
+            <button class="btn btn-default" @click.prevent="qna_create">질문 수정</button>
         </div>
     </div>
 </form>

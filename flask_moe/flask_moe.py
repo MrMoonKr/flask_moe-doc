@@ -4,11 +4,24 @@ from flask_moe.models import Source, BoardQna, BoardQnaReply
 import zipfile
 from formencode import htmlfill
 from six import BytesIO
-from sqlalchemy import asc
+from sqlalchemy import asc, desc, func
 import datetime
+import paginate
+from paginate_sqlalchemy import SqlalchemyOrmWrapper
 
 app = Flask(__name__)
 app.config.update(SECRET_KEY='go$Thgy4@Tgha%*gfg48vV')
+
+
+def paginate_link_tag(item):
+    """
+    Create an A-HREF tag that points to another page usable in paginate.
+    """
+    a_tag = paginate.Page.default_link_tag(item)
+
+    if item['type'] == 'current_page':
+        return paginate.make_html_tag('li', paginate.make_html_tag('a', a_tag), **{"class": "active"})
+    return paginate.make_html_tag("li", a_tag)
 
 
 @app.route("/")
@@ -83,11 +96,39 @@ def jenkins_deploy():
 
 @app.route("/board/<board_section>")
 def qna_list(board_section):
-    records = db_session.query(BoardQna).filter(BoardQna.section == board_section)
+    current_page = request.args.get('page', 1)
+    srch_key = request.args.get('srch_key', '')
+    srch_value = request.args.get('srch_value', '')
+
+    """
+      <option value="all">전체</option>
+                    <option value="title">제목</option>
+                    <option value="author">작성자</option>
+                    <option value="content">내용</option>
+                    """
+
+    page_url = url_for("qna_list", board_section=board_section, srch_key=srch_key, srch_value=srch_value)
+    page_url = str(page_url) + "&page=$page"
+
+    record_cnt = db_session.query(func.count(BoardQna.id)).filter(BoardQna.section == board_section).first()
+    if srch_key:
+        pass
+
+    records = db_session.query(BoardQna).filter(BoardQna.section == board_section).order_by(desc(BoardQna.create_date))
+
+    items_per_page = 15
+    virtual_article_no = record_cnt[0] - (current_page - 1) * items_per_page
+    # https://okky.kr/article/407295
+
+    paginator = paginate.Page(records, current_page, page_url=page_url, items_per_page=items_per_page,
+                              wrapper_class=SqlalchemyOrmWrapper)
 
     tpl_vars = dict(
         current_path=board_section,
-        records=records
+        paginator=paginator,
+        paginate_link_tag=paginate_link_tag,
+        page_url=page_url,
+        virtual_article_no=virtual_article_no
     )
     template_file = 'qna/{}.html'.format(board_section)
 
