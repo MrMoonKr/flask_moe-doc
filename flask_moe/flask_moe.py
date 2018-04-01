@@ -106,13 +106,6 @@ def qna_list(board_section):
     srch_key = request.args.get('srch_key', '')
     srch_value = request.args.get('srch_value', '')
 
-    """
-      <option value="all">전체</option>
-                    <option value="title">제목</option>
-                    <option value="author">작성자</option>
-                    <option value="content">내용</option>
-                    """
-
     page_url = url_for("qna_list", board_section=board_section, srch_key=srch_key, srch_value=srch_value)
     page_url = str(page_url) + "&page=$page"
 
@@ -158,9 +151,8 @@ def qna_list(board_section):
         page_url=page_url,
         virtual_article_no=virtual_article_no
     )
-    template_file = 'qna/{}.html'.format(board_section)
 
-    return render_template(template_file, **tpl_vars)
+    return render_template('qna/qna.html', **tpl_vars)
 
 
 @app.route("/board/<board_section>/<article_id>")
@@ -174,9 +166,8 @@ def qna_view(board_section, article_id):
         current_path=board_section,
         record=record
     )
-    template_file = 'qna/{}_view.html'.format(board_section)
 
-    return render_template(template_file, **tpl_vars)
+    return render_template('qna/view.html', **tpl_vars)
 
 
 @app.route("/board/<board_section>/<article_id>/modify")
@@ -187,9 +178,8 @@ def qna_modify_view(board_section, article_id):
         current_path=board_section,
         record=record
     )
-    template_file = 'qna/{}_modify.html'.format(board_section)
-
-    return render_template(template_file, **tpl_vars)
+    
+    return render_template('qna/modify.html', **tpl_vars)
 
 
 @app.route("/board/<board_section>/<article_id>/modify", methods=["POST"])
@@ -235,9 +225,8 @@ def qna_add_view(board_section):
     tpl_vars = dict(
         current_path=board_section
     )
-    template_file = 'qna/{}_write.html'.format(board_section)
 
-    return render_template(template_file, **tpl_vars)
+    return render_template('qna/write.html', **tpl_vars)
 
 
 @app.route("/board/<board_section>/add", methods=["POST"])
@@ -465,9 +454,28 @@ def get_host_url():
     return current_host
 
 
+def page_title():
+    request_url = request.environ
+    
+    return dict(
+        flask_web_qna="Flask 기반의 파이썬 웹 프로그래밍",
+        vuejs_first_step="Vue.js 첫걸음"
+    ).get(request_url['werkzeug.request'].view_args['board_section'])
+
+
+def disqus_url():
+    request_url = request.environ
+    
+    return dict(
+        flask_web_qna="flask-based-python-web-programming.disqus.com",
+        vuejs_first_step="vuejs-first-step.disqus.com"
+    ).get(request_url['werkzeug.request'].view_args['board_section'])
+
+
 @app.context_processor
 def utility_processor():
-    return dict(get_host_url=get_host_url)
+    return dict(get_host_url=get_host_url, page_title=page_title, disqus_url=disqus_url)
+
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):

@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content_block %}
-    <h3></h3>
+    <h2>{{ page_title() }} 독자문의</h2>
     <div class="row">
         <div class="col-sm-8">
             <div class="panel panel-info">
@@ -43,8 +43,8 @@
                     </form>
                 </div>
                 <div class="panel-footer text-right">
-                    <a href="{{ url_for('qna_list', board_section='flask_web_qna') }}" class="btn btn-primary">목록</a>
-                    <a href="{{ url_for('qna_modify_view', board_section='flask_web_qna', article_id=record.id) }}" class="btn btn-warning">수정</a>
+                    <a href="{{ url_for('qna_list', board_section=current_path) }}" class="btn btn-primary">목록</a>
+                    <a href="{{ url_for('qna_modify_view', board_section=current_path, article_id=record.id) }}" class="btn btn-warning">수정</a>
                     <button data-toggle="modal" data-target="#passwordModal" class="btn btn-danger">삭제</button>
                 </div>
             </div>
@@ -61,13 +61,13 @@
     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
     
     var disqus_config = function () {
-        this.page.url = "{{ get_host_url() }}{{ url_for('qna_view', board_section='flask_web_qna', article_id=record.id) }}";  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = 'flask_web_qna/{{ record.id }}'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.url = "{{ get_host_url() }}{{ url_for('qna_view', board_section=current_path, article_id=record.id) }}";  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = '{{ current_path }}/{{ record.id }}'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
     };
     
     (function() { // DON'T EDIT BELOW THIS LINE
     var d = document, s = d.createElement('script');
-    s.src = 'https://vuejs-first-step.disqus.com/embed.js';
+    s.src = 'https://{{ disqus_url() }}/embed.js';
     s.setAttribute('data-timestamp', +new Date());
     (d.head || d.body).appendChild(s);
     })();
@@ -108,12 +108,12 @@
                     if(confirm("삭제하시면 돌이킬 수 없습니다. 정말 삭제하시겠습니까?")) {
                         var vm = this;
 
-                        axios.post("{{ url_for('qna_delete', board_section='flask_web_qna', article_id=record.id) }}", {
+                        axios.post("{{ url_for('qna_delete', board_section=current_path, article_id=record.id) }}", {
                             password: this.password
                         }).then(function(resp) {
                             if(resp.data.success) {
                                 alert("게시물울 삭제했습니다. 리스트로 이동합니다");
-                                location.href = "{{ url_for('qna_list', board_section='flask_web_qna') }}";
+                                location.href = "{{ url_for('qna_list', board_section=current_path) }}";
                             } else {
                                 alert("비밀번호 입력을 실패했습니다. 다시 입력해주세요");
                                 vm.password_error = true;

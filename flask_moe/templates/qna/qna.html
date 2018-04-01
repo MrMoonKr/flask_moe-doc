@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block content_block %}
-    <h2>Flask 기반의 파이썬 웹 프로그래밍 독자문의</h2>
+    <h2>{{ page_title() }} 독자문의</h2>
     <div class="row">
         <div class="col-sm-12">
             <table class="table table-striped">
@@ -21,7 +21,7 @@
                     {% for record in paginator %}
                     <tr>
                         <td>{{ virtual_article_no - loop.index0 }}</td>
-                        <td><a href="{{ url_for('qna_view', board_section='flask_web_qna', article_id=record.id) }}">{{ record.title }}</a></td>
+                        <td><a href="{{ url_for('qna_view', board_section=current_path, article_id=record.id) }}">{{ record.title }}</a></td>
                         <td>{{ record.user_name }}</td>
                         <td>{{ record.hit }}</td>
                         <td>{{ record.create_date.strftime('%Y-%m-%d') }}</td>
@@ -67,8 +67,7 @@
     </div>
     <div class="row">
         <div class="col-sm-push-11 col-sm-1">
-            <a class="btn btn-primary" href="{{ url_for('qna_add_view', board_section='flask_web_qna') }}">새 문의 작성</a>
+            <a class="btn btn-primary" href="{{ url_for('qna_add_view', board_section=current_path) }}">새 문의 작성</a>
         </div>
     </div>
-    <script id="dsq-count-scr" src="//vuejs-first-step.disqus.com/count.js" async></script>
 {% endblock %}
