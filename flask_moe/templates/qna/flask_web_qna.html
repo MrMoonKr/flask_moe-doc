@@ -21,7 +21,7 @@
                     {% for record in paginator %}
                     <tr>
                         <td>{{ virtual_article_no - loop.index0 }}</td>
-                        <td><a href="{{ url_for('qna_view', board_section='flask_web_qna', article_id=record.id) }}#disqus_thread">{{ record.title }}</a></td>
+                        <td><a href="{{ url_for('qna_view', board_section='flask_web_qna', article_id=record.id) }}">{{ record.title }}</a></td>
                         <td>{{ record.user_name }}</td>
                         <td>{{ record.hit }}</td>
                         <td>{{ record.create_date.strftime('%Y-%m-%d') }}</td>

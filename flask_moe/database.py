@@ -1,8 +1,12 @@
+import yaml
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-engine = create_engine('postgresql+pg8000://jiho:thwls@db/flask_moe', convert_unicode=True)
+config = yaml.load(open("config.yml"))
+
+engine = create_engine(config['database_uri'], convert_unicode=True)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
                                          bind=engine))

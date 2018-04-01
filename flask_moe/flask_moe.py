@@ -1,16 +1,22 @@
-from flask import Flask, render_template, request, url_for, redirect, send_file, flash, jsonify
-from flask_moe.database import db_session
-from flask_moe.models import Source, BoardQna, BoardQnaReply
 import zipfile
-from formencode import htmlfill
-from six import BytesIO
-from sqlalchemy import asc, desc, func
 import datetime
 import paginate
+import telegram
+import yaml
+
+from flask import Flask, render_template, request, url_for, redirect, send_file, flash, jsonify
 from paginate_sqlalchemy import SqlalchemyOrmWrapper
+from sqlalchemy import asc, desc, func, or_
+from formencode import htmlfill
+from six import BytesIO
+
+from flask_moe.database import db_session
+from flask_moe.models import Source, BoardQna, BoardQnaReply
 
 app = Flask(__name__)
 app.config.update(SECRET_KEY='go$Thgy4@Tgha%*gfg48vV')
+
+config = yaml.load(open("config.yml"))
 
 
 def paginate_link_tag(item):
@@ -110,11 +116,33 @@ def qna_list(board_section):
     page_url = url_for("qna_list", board_section=board_section, srch_key=srch_key, srch_value=srch_value)
     page_url = str(page_url) + "&page=$page"
 
-    record_cnt = db_session.query(func.count(BoardQna.id)).filter(BoardQna.section == board_section).first()
-    if srch_key:
-        pass
+    record_cnt = db_session.query(func.count(BoardQna.id)).filter(BoardQna.section == board_section)
+    if srch_key and srch_value:
+        if srch_key == "all":
+            record_cnt = record_cnt.filter(or_(BoardQna.title.contains(srch_value),
+            BoardQna.user_name.contains(srch_value),
+            BoardQna.content.contains(srch_value)))
+        elif srch_key == "title":
+            record_cnt = record_cnt.filter(BoardQna.title.contains(srch_value))
+        elif srch_key == "author":
+            record_cnt = record_cnt.filter(BoardQna.user_name.contains(srch_value))
+        elif srch_key == "content":
+            record_cnt = record_cnt.filter(BoardQna.content.contains(srch_value))
+    record_cnt = record_cnt.first()
 
-    records = db_session.query(BoardQna).filter(BoardQna.section == board_section).order_by(desc(BoardQna.create_date))
+    records = db_session.query(BoardQna).filter(BoardQna.section == board_section)
+    if srch_key and srch_value:
+        if srch_key == "all":
+            records = records.filter(or_(BoardQna.title.contains(srch_value),
+            BoardQna.user_name.contains(srch_value),
+            BoardQna.content.contains(srch_value)))
+        elif srch_key == "title":
+            records = records.filter(BoardQna.title.contains(srch_value))
+        elif srch_key == "author":
+            records = records.filter(BoardQna.user_name.contains(srch_value))
+        elif srch_key == "content":
+            records = records.filter(BoardQna.content.contains(srch_value))
+    records = records.order_by(desc(BoardQna.create_date))
 
     items_per_page = 15
     virtual_article_no = record_cnt[0] - (current_page - 1) * items_per_page
@@ -182,6 +210,22 @@ def qna_modify(board_section, article_id):
 
         ret_dict["success"] = True
     
+        bot_message = "[{board_section}] 글이 수정되었습니다\n" \
+        "Title: {title}\n" \
+        "Date: {create_date}\n" \
+        "link: {link}"
+
+        bot = telegram.Bot(token=config['telegram_token'])
+
+        try:
+            bot.sendMessage(chat_id=config['telegram_search5'], text=bot_message.format(
+                board_section=board_section,
+                title=record.title,
+                create_date=record.create_date.strftime("%Y-%m-%d %H:%M:%S"),
+                link="{}/board/{}/{}".format(get_host_url(), board_section, record.id)))
+        except:
+            pass
+    
     return jsonify(ret_dict)
 
 
@@ -212,6 +256,22 @@ def qna_add(board_section):
 
     db_session.add(record)
     db_session.commit()
+
+    bot_message = "[{board_section}] 새 글이 등록되었습니다\n" \
+    "Title: {title}\n" \
+    "Date: {create_date}\n" \
+    "link: {link}"
+
+    bot = telegram.Bot(token=config['telegram_token'])
+
+    try:
+        bot.sendMessage(chat_id=config['telegram_search5'], text=bot_message.format(
+            board_section=board_section,
+            title=record.title,
+            create_date=record.create_date.strftime("%Y-%m-%d %H:%M:%S"),
+            link="{}/board/{}/{}".format(get_host_url(), board_section, record.id)))
+    except:
+        pass
     
     return jsonify(dict(success=True))
 
@@ -225,9 +285,26 @@ def qna_delete(board_section, article_id):
     req_json = request.get_json()
     if req_json.get("password") == record.password:
         db_session.delete(record)
-        db_session.commit()
 
         ret_dict["success"] = True
+
+        bot_message = "[{board_section}] 글이 삭제되었습니다\n" \
+        "Title: {title}\n" \
+        "Date: {create_date}\n" \
+        "link: {link}"
+
+        bot = telegram.Bot(token=config['telegram_token'])
+
+        try:
+            bot.sendMessage(chat_id=config['telegram_search5'], text=bot_message.format(
+                board_section=board_section,
+                title=record.title,
+                create_date=record.create_date.strftime("%Y-%m-%d %H:%M:%S"),
+                link="{}/board/{}/{}".format(get_host_url(), board_section, record.id)))
+        except:
+            pass
+
+        db_session.commit()
     
     return jsonify(ret_dict)
 
