@@ -40,6 +40,11 @@ def index_page():
     return render_template('index.html', **tpl_vars)
 
 
+@app.route("/environ")
+def environ():
+    return "<br>".join([{key: value} for key, value in request.environ.items()])
+
+
 @app.route("/windows")
 def env_windows():
     current_path = "windows"
