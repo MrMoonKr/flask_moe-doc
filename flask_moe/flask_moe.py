@@ -174,7 +174,7 @@ def qna_view(board_section, article_id):
     
         return render_template('qna/view.html', **tpl_vars)
     else:
-        return redirect(request.environ["HTTP_REFERER"])
+        return redirect(url_for('qna_list', board_section=board_section))
 
 
 @app.route("/board/<board_section>/<article_id>/hit", methods=["POST"])
