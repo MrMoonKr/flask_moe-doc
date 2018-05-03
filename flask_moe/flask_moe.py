@@ -162,10 +162,7 @@ def qna_list(board_section):
 
 @app.route("/board/<board_section>/<article_id>")
 def qna_view(board_section, article_id):
-    print("<br>".join([{key: value} for key, value in request.environ.items()]))
-
     record = db_session.query(BoardQna).filter(BoardQna.section == board_section).filter(BoardQna.id == article_id).first()
-    record.hit += 1
 
     db_session.commit()
 
@@ -175,6 +172,16 @@ def qna_view(board_section, article_id):
     )
 
     return render_template('qna/view.html', **tpl_vars)
+
+
+@app.route("/board/<board_section>/<article_id>/hit", methods=["POST"])
+def qna_hit_increment(board_section, article_id):
+    record = db_session.query(BoardQna).filter(BoardQna.section == board_section).filter(BoardQna.id == article_id).first()
+    record.hit += 1
+    
+    db_session.commit()
+    
+    return jsonify(dict(success=True))
 
 
 @app.route("/board/<board_section>/<article_id>/modify")

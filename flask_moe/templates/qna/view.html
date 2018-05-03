@@ -98,6 +98,14 @@
         </div>
     </div>
     <script>
+        // 읽기 여부 체크(세션 스토리지 사용)
+        if (sessionStorage.getItem('{{ current_path }}/{{ record.id }}') === null) {
+            // hit 증가
+            axios.post("{{ url_for('qna_hit_increment', board_section=current_path, article_id=record.id) }}").then(() => {
+                sessionStorage.setItem('{{ current_path }}/{{ record.id }}', true)
+            })
+        }
+        
         new Vue({
             el: "#passwordModal",
             data: {
