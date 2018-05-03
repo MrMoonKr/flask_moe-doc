@@ -40,9 +40,9 @@ def index_page():
     return render_template('index.html', **tpl_vars)
 
 
-@app.route("/environ")
-def environ():
-    return "<br>".join(["{key}:{value}".format(key=key, value=value) for key, value in request.environ.items()])
+# @app.route("/environ")
+# def environ():
+#    return "<br>".join(["{key}:{value}".format(key=key, value=value) for key, value in request.environ.items()])
 
 
 @app.route("/windows")
@@ -162,6 +162,8 @@ def qna_list(board_section):
 
 @app.route("/board/<board_section>/<article_id>")
 def qna_view(board_section, article_id):
+    print("<br>".join([{key: value} for key, value in request.environ.items()]))
+
     record = db_session.query(BoardQna).filter(BoardQna.section == board_section).filter(BoardQna.id == article_id).first()
     record.hit += 1
 
@@ -447,7 +449,7 @@ def source_view(code_num):
 
 
 def get_host_url():
-    current_host = request.environ["SERVER_NAME"]
+    current_host = request.environ["HTTP_HOST"]
     if len(request.environ.get("SERVER_PORT", "")) > 0:
         current_host = "{}:{}".format(current_host, request.environ["SERVER_PORT"])
     
