@@ -163,15 +163,18 @@ def qna_list(board_section):
 @app.route("/board/<board_section>/<article_id>")
 def qna_view(board_section, article_id):
     record = db_session.query(BoardQna).filter(BoardQna.section == board_section).filter(BoardQna.id == article_id).first()
-
-    db_session.commit()
-
-    tpl_vars = dict(
-        current_path=board_section,
-        record=record
-    )
-
-    return render_template('qna/view.html', **tpl_vars)
+    
+    if record:
+        db_session.commit()
+    
+        tpl_vars = dict(
+            current_path=board_section,
+            record=record
+        )
+    
+        return render_template('qna/view.html', **tpl_vars)
+    else:
+        return redirect(request.environ["HTTP_REFERER"])
 
 
 @app.route("/board/<board_section>/<article_id>/hit", methods=["POST"])

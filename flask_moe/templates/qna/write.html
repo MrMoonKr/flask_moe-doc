@@ -14,7 +14,10 @@
                 title: '',
                 author: '',
                 password: '',
-                content: ''
+                content: '',
+                error_title: false,
+                error_author: false,
+                error_passwd: false
             },
             methods: {
                 qna_create: function(event) {
@@ -31,6 +34,10 @@
                                 location.href = "{{ url_for('qna_list', board_section=current_path) }}";
                             }
                         });
+                    } else {
+                        this.error_title = (this.title.length() > 0) ? false : true;
+                        this.error_author = (this.author.length() > 0) ? false : true;
+                        this.error_passwd = (this.password.length() > 0) ? false : true;
                     }
                 }
             },
@@ -49,19 +56,19 @@
 {% block content_block %}
 <h2>{{ page_title() }} 독자문의</h2>
 <form class="form-horizontal" id="form">
-    <div class="form-group">
+    <div class="form-group" :class="{ 'has-error': error_title }">
         <label for="inputTitle" class="col-sm-2 control-label">제목</label>
         <div class="col-sm-10">
             <input type="text" class="form-control" v-model="title" id="inputTitle" placeholder="질문을 입력하세요" required>
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" :class="{ 'has-error': error_author }">
         <label for="inputAuthor" class="col-sm-2 control-label">작성자</label>
         <div class="col-sm-10">
             <input type="text" class="form-control" v-model="author" id="inputAuthor" placeholder="작성자명을 입력하세요" required>
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" :class="{ 'has-error': error_passwd }">
         <label for="inputPW" class="col-sm-2 control-label">비밀번호</label>
         <div class="col-sm-10">
             <input type="password" class="form-control" v-model="password" id="inputPW" placeholder="비밀번호를 입력하세요" required>
