@@ -42,7 +42,7 @@ def index_page():
 
 @app.route("/environ")
 def environ():
-    return "<br>".join([{key: value} for key, value in request.environ.items()])
+    return "<br>".join(["{key}:{value}".format(key=key, value=value) for key, value in request.environ.items()])
 
 
 @app.route("/windows")
